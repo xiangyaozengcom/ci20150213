@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!--
+http://www.ablanxue.com/prone_7512_1.html
+JS+div+csss实现瀑布流式布局 不用jquery - js教程 - ab蓝学网.html
+<?php echo  base_url('application/views/images/20141202/1.jpg');?>
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript">
+window.onload=function()
+{
+        var oDiv =document.getElementById("div");
+        var oUl=document.getElementsByTagName("ul");
+        window.onscroll=function()
+        {
+                var clientH=document.documentElement.clientHeight;
+                var scrollH=document.documentElement.scrollTop||document.body.scrollTop;
+                for(var i=0;i<oUl.length;i++)
+                {
+                        var aLi=oUl[i].getElementsByTagName("li")
+                        var lastL=aLi[aLi.length-1];
+                        if(toTop(lastL)<clientH+scrollH)
+                        {
+                                ajax("a.js",function(str)
+                                {
+                                        var json = eval('('+str+')')
+                                        for(var i=0;i<json.list.length;i++)
+                                        {
+                                                var list=json.list[i];
+                                                for(var j=0;j<list.src.length;j++)
+                                                {
+                                                        var oLi=document.createElement("li")
+                                                        oLi.innerHTML='<img src="'+list.src[j]+'"><p>'+list.title[j]+'</p>'
+                                                        oUl[i].appendChild(oLi);
+                                                }
+                                        }
+                                })
+                        }
+                }
+        }
+ 
+        function toTop(obj)
+        {
+                var top=0;
+                while(obj)
+                {
+                        top +=obj.offsetTop;
+                        obj=obj.offsetParent       
+                }
+                return top;
+        }
+}
+
+function ajax(url,sFn,nFn)
+{
+        var oAjax=null;
+        if(window.ActiveXObject)
+        {
+                oAjax=new ActiveXObject("Microsoft.XMLHTTP")
+        }
+        else
+        {
+                oAjax=new XMLHttpRequest();
+        }
+        oAjax.open("GET",url,true)
+        oAjax.send();
+        oAjax.onreadystatechange=function()
+        {
+                if(oAjax.readyState==4)
+                {
+                        if(oAjax.status==200)
+                        {
+                                if(sFn)
+                                {
+                                        sFn(oAjax.responseText)
+                                }
+                        }
+                        else
+                        {
+                                if(nFn)
+                                {
+                                        nFn(oAjax.status)
+                                }
+                        }
+                }
+        }
+} 
+</script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <div>20141202</div>
+        <div id='div'>
+                <ul>
+                        <li>
+                            <img src="images/1.jpg">
+                                <p>1</p>
+                        </li>
+                        <li>
+                                <img src="<?php echo base_url('application/views/images/1.jpg');?>">
+                                <p>2</p>
+                        </li>
+                        <li>
+                                <img src="<?php echo base_url('application/views/images/20141202/1.jpg');?>">
+                                <p>3</p>
+                        </li>
+                        <li>
+                                <img src="<?php echo base_url('application/views/images/ecshop_logo.gif');?>">
+                                <p>4</p>
+                        </li>
+                </ul>
+                <ul>
+                        <li>
+                                <img src="./application/views/images/20141202/5.jpg">
+                                <p>5</p>
+                        </li>
+                        <li>
+                                <img src="./application/views/images/20141202/6.jpg">
+                                <p>6</p>
+                        </li>
+                        <li>
+                                <img src="./application/views/images/20141202/7.jpg">
+                                <p>7</p>
+                        </li>
+                        <li>
+                                <img src="./application/views/images/20141202/8.jpg">
+                                <p>8</p>
+                        </li>
+                </ul>
+        </div> 
+    </body>
+</html>
